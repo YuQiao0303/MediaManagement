@@ -6,7 +6,8 @@
 #include "QtSql"
 #include "QDesktopServices"    //以默认打开方式打开
 #include <Windows.h>
-
+#include <iostream>
+using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -127,6 +128,7 @@ void MainWindow::open()
 }
 void MainWindow::wayToOpen()
 {
+    QString pathBack,exeBack;
     //获取要打开的文件路径path
     int curRow = ui->tableView->currentIndex().row();
     QModelIndex index=model->index(curRow,2,QModelIndex());//rowNum,columnNum为行列号
@@ -134,26 +136,31 @@ void MainWindow::wayToOpen()
 
     //处理path的类型
     path = path.replace(QRegExp("\\/"),"\\\\");//左右斜杠转换
+    path = QString("\"%1\"").arg(path);  //加上引号
     std::wstring pathW = path.toStdWString();
     LPCWSTR pathL = pathW.c_str();  //转换为LPCWSTR
-    QString pathBack = QString::fromStdWString(pathL);
-    QMessageBox::about(NULL, "pathBack", pathBack);
+
 
     //选择打开方式
     QString exe = QFileDialog::getOpenFileName(this,tr("请选择打开方式"),"C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Accessories");
     exe = exe.replace(QRegExp("\\/"),"\\\\");//左右斜杠转换
-
+    //exe =QString("\"%1\"").arg(exe);   //加上引号
     //QMessageBox::information(NULL, "Title", path, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     LPCWSTR exeL = exe.toStdWString().c_str();  //转换为LPCWSTR
     //LPCWSTR exeL = QString::toStdWString(exe);
     //exeL =TEXT("C:\\\\Program Files\\\\Windows NT\\\\Accessories\\\\wordpad.exe");
-    QString exeBack = QString::fromStdWString(exeL);
-    //QMessageBox::about(NULL, "exeBack", exeBack);
-
 
     //打开该文件
     LPCWSTR openL = TEXT("open");
     //LPCWSTR txtL = TEXT("D:\\\\软件目录.txt");
     //LPCWSTR wordpadL = TEXT("C:\\\\Program Files\\\\Windows NT\\\\Accessories\\\\wordpad.exe");
+    //exeL = TEXT("");
     ShellExecuteW(NULL,openL,exeL,pathL,NULL,SW_SHOWNORMAL);
+
+    /*
+    pathBack = QString::fromStdWString(pathL);
+    QMessageBox::about(NULL, "pathBack", pathBack);
+    exeBack = QString::fromStdWString(exeL);
+    QMessageBox::about(NULL, "exeBack", exeBack);
+    */
 }

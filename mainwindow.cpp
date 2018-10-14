@@ -179,8 +179,8 @@ void MainWindow::add()
              }
          }
         //添加
-        //query.exec(QString("insert into media values(%1,'%2','%3','%4','%5','%6')").arg(id).arg(fileName).arg(path).arg(title).arg(artist).arg(album));
-        query.exec(QString("insert into media values(%1,'%2','%3')").arg(id).arg(fileName).arg(path));
+        query.exec(QString("insert into media values(%1,'%2','%3','%4','%5','%6')").arg(id).arg(fileName).arg(path).arg(title).arg(artist).arg(album));
+        //query.exec(QString("insert into media values(%1,'%2','%3')").arg(id).arg(fileName).arg(path));
         model->select();
     }
 }
@@ -241,13 +241,13 @@ void MainWindow::detail()
     int id= index.data().toInt();
     //获取文件信息
     QSqlQuery query;
-    QString sql = QString("select path from media where id = %1").arg(id);
+    QString sql = QString("select * from media where id = %1").arg(id);
     query.exec(sql);
     query.first() ;
     filePath = query.value(0).toString() ;
-    title = query.value(4).toString();
-    artist = query.value(5).toString();
-    album = query.value(6).toString();
+    title = query.value(3).toString();
+    artist = query.value(4).toString();
+    album = query.value(5).toString();
 
     //查找文件信息
 //    ZPlay* player= CreateZPlay();

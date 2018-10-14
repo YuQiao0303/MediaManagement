@@ -161,7 +161,7 @@ void MainWindow::add()
         QFileInfo fileInfo(path);
         QString fileName = fileInfo.fileName(); 
         //查询文件信息
-        QString title,artist,album;
+        QString title,artist,album,year;
         ZPlay* player= CreateZPlay();
         TID3InfoEx id3_info;
         if(player == 0)
@@ -175,11 +175,12 @@ void MainWindow::add()
                  title = QString::fromLocal8Bit(id3_info.Title);
                  artist = QString::fromLocal8Bit(id3_info.Artist);
                  album = QString::fromLocal8Bit(id3_info.Album);
+                 year =QString::fromLocal8Bit(id3_info.Year);
                  //picture = id3_info.Picture;
              }
          }
         //添加
-        query.exec(QString("insert into media values(%1,'%2','%3','%4','%5','%6')").arg(id).arg(fileName).arg(path).arg(title).arg(artist).arg(album));
+        query.exec(QString("insert into media values(%1,'%2','%3','%4','%5','%6','%7')").arg(id).arg(fileName).arg(path).arg(title).arg(artist).arg(album).arg(year));
         //query.exec(QString("insert into media values(%1,'%2','%3')").arg(id).arg(fileName).arg(path));
         model->select();
     }
@@ -234,7 +235,7 @@ void MainWindow::wayToOpen()
 }
 void MainWindow::detail()
 {
-    QString filePath,title,artist,album,picture;
+    QString filePath,title,artist,album,year;
     //获取id
     int curRow = ui->tableView->currentIndex().row(); //获取选中的行
     QModelIndex index=model->index(curRow,0,QModelIndex());//rowNum,columnNum为行列号
@@ -248,7 +249,7 @@ void MainWindow::detail()
     title = query.value(3).toString();
     artist = query.value(4).toString();
     album = query.value(5).toString();
-
+    year =query.value(6).toString();
     //查找文件信息
 //    ZPlay* player= CreateZPlay();
 //    TID3InfoEx id3_info;

@@ -41,9 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //由内容调整列
     //ui->tableView->resizeColumnsToContents();
-    ui->tableView->setColumnWidth(0,30);
-    ui->tableView->setColumnWidth(1,300);
-    ui->tableView->setColumnWidth(2,400);
+    //ui->tableView->setColumnWidth(0,30);
+    //ui->tableView->setColumnWidth(1,300);
+    //ui->tableView->setColumnWidth(2,400);
 
     //文件类型下拉框
     ui->comboBox_fileType->addItem("全部文件");
@@ -51,6 +51,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_fileType->addItem("图片");
     ui->comboBox_fileType->addItem("音频");
     ui->comboBox_fileType->addItem("视频");
+
+    //详细信息下拉框
+    ui->comboBox_info->addItem("文件名");
+    ui->comboBox_info->addItem("艺术家");
+    ui->comboBox_info->addItem("专辑");
+    ui->comboBox_info->addItem("年份");
 
 }
 
@@ -74,7 +80,6 @@ void MainWindow::on_pushButton_showAll_clicked()   //显示全表
 void MainWindow::on_pushButton_search_clicked()   //搜索
 {
     search();
-    qDebug("sousuo");
 }
 
 void MainWindow::on_pushButton_add_clicked()    //添加新文件
@@ -122,9 +127,10 @@ void MainWindow::showAll()
 }
 void MainWindow::search()
 {
-    QString fileName = ui->lineEdit->text();
+    QString searchContent = ui->lineEdit->text();
     int filetype = ui->comboBox_fileType->currentIndex();
-    QString filter;
+    int info = ui->comboBox_info->currentIndex();
+    QString filter="";
     /*
     switch (filetype)
     {
@@ -135,13 +141,32 @@ void MainWindow::search()
     case 4:QMessageBox::about(this,"4","video");filter = QString("name like '%%1%.mp4'").arg(fileName);break;
     }
     */
+//    switch (filetype)
+//    {
+//    case 0:filter = QString("name like '%%1%'").arg(fileName);break;
+//    case 1:filter = QString("name like '%%1%.txt'").arg(fileName);break;
+//    case 2:filter = QString("name like '%%1%.png' or name like '%%1%.jpg'").arg(fileName);break;
+//    case 3:filter = QString("name like '%%1%.mp3'").arg(fileName);break;
+//    case 4:filter = QString("name like '%%1%.mp4'").arg(fileName);break;
+//    }
     switch (filetype)
     {
-    case 0:filter = QString("name like '%%1%'").arg(fileName);break;
-    case 1:filter = QString("name like '%%1%.txt'").arg(fileName);break;
-    case 2:filter = QString("name like '%%1%.png' or name like '%%1%.jpg'").arg(fileName);break;
-    case 3:filter = QString("name like '%%1%.mp3'").arg(fileName);break;
-    case 4:filter = QString("name like '%%1%.mp4'").arg(fileName);break;
+    case 0:break;
+    case 1:filter = QString("(name like '%.txt')");break;
+    case 2:filter = QString("(name like '%.png' or name like '%.jpg')");break;
+    case 3:filter = QString("(name like '%.mp3')");break;
+    case 4:filter = QString("(name like '%.mp4')");break;
+    }
+    if(filetype!=0)
+    {
+        filter+= " and ";
+    }
+    switch (info)
+    {
+    case 0:filter += QString("name like '%%1%'").arg(searchContent);break;
+    case 1:filter += QString("artist like '%%1%'").arg(searchContent);break;
+    case 2:filter += QString("album like '%%1%'").arg(searchContent);break;
+    case 3:filter += QString("year like '%%1%'").arg(searchContent);break;
     }
     model->setFilter(filter);
     model->select();

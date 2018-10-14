@@ -1,0 +1,11 @@
+/* === Shared === */
+
+QStackedWidget, QLabel, QPushButton, QRadioButton, QCheckBox,
+QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog ,QTableView{
+
+    color: black;
+    /*font-family:  "Rockwell";*/
+}
+
+
+

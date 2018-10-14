@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>559</width>
-    <height>366</height>
+    <width>697</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,142 +19,132 @@
      <rect>
       <x>20</x>
       <y>100</y>
-      <width>491</width>
-      <height>141</height>
+      <width>661</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="contextMenuPolicy">
      <enum>Qt::CustomContextMenu</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_add">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>31</x>
-      <y>271</y>
-      <width>75</width>
-      <height>23</height>
+      <x>30</x>
+      <y>62</y>
+      <width>72</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>导入新文件</string>
+     <string>按类型搜文件</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_delete">
+   <widget class="QComboBox" name="comboBox_fileType">
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>270</y>
+      <y>60</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_search">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>10</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>删除所选行</string>
+     <string>搜索</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_showAll">
+   <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>270</y>
-      <width>75</width>
-      <height>23</height>
+      <x>21</x>
+      <y>12</y>
+      <width>571</width>
+      <height>20</height>
      </rect>
     </property>
-    <property name="text">
-     <string>显示全表</string>
+    <property name="placeholderText">
+     <string>请输入关键字</string>
     </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_open">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>270</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>打开</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_wayToOpen">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>270</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>打开方式</string>
-    </property>
-   </widget>
-   <widget class="QSplitter" name="splitter">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>551</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-    <widget class="QRadioButton" name="radioButton">
-     <property name="text">
-      <string>全部类型</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_2">
-     <property name="text">
-      <string>文本文档</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_3">
-     <property name="text">
-      <string>图片</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_4">
-     <property name="text">
-      <string>音频</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_5">
-     <property name="text">
-      <string>视频</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>491</width>
+      <x>30</x>
+      <y>370</y>
+      <width>401</width>
       <height>25</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="placeholderText">
-        <string>请输入关键字</string>
+      <widget class="QPushButton" name="pushButton_delete">
+       <property name="text">
+        <string>Delete</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_search">
+      <widget class="QPushButton" name="pushButton_add">
        <property name="text">
-        <string>搜索</string>
+        <string>导入新文件</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_showAll">
+       <property name="text">
+        <string>显示全表</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_open">
+       <property name="text">
+        <string>打开</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_wayToOpen">
+       <property name="text">
+        <string>打开方式</string>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>60</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>按其他信息搜索文件：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_info">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>60</y>
+      <width>121</width>
+      <height>22</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -162,10 +152,35 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>559</width>
+     <width>697</width>
      <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action_add"/>
+    <addaction name="action_delete"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>打开</string>
+    </property>
+    <addaction name="action_open"/>
+    <addaction name="action_way_to_open"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>查询</string>
+    </property>
+    <addaction name="action_show_all"/>
+    <addaction name="action_search"/>
+    <addaction name="action_detail"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -176,6 +191,46 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_add">
+   <property name="text">
+    <string>导入新文件</string>
+   </property>
+  </action>
+  <action name="action_delete">
+   <property name="text">
+    <string>删除文件</string>
+   </property>
+  </action>
+  <action name="action_open">
+   <property name="text">
+    <string>按默认方式打开
+</string>
+   </property>
+  </action>
+  <action name="action_way_to_open">
+   <property name="text">
+    <string>选择打开方式
+</string>
+   </property>
+  </action>
+  <action name="action_show_all">
+   <property name="text">
+    <string>显示全表
+</string>
+   </property>
+  </action>
+  <action name="action_search">
+   <property name="text">
+    <string>按关键字搜索
+</string>
+   </property>
+  </action>
+  <action name="action_detail">
+   <property name="text">
+    <string>显示详细信息
+</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

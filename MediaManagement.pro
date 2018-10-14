@@ -39,3 +39,35 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltag
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltagd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltag
+
+INCLUDEPATH += $$PWD/taglib/include
+DEPENDPATH += $$PWD/taglib/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltag_c
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltag_cd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltag_c
+
+INCLUDEPATH += $$PWD/taglib/include
+DEPENDPATH += $$PWD/taglib/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltaglib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/taglib/lib/ -ltaglib
+else:unix: LIBS += -L$$PWD/taglib/lib/ -ltaglib
+
+INCLUDEPATH += $$PWD/taglib/include
+DEPENDPATH += $$PWD/taglib/include
+
+#样式
+RESOURCES += \
+    style.qrc
+
+#libzplay
+win32: LIBS += -L$$PWD/./ -lzplay
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.

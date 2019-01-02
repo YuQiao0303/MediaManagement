@@ -43,8 +43,13 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setTable("media");
     model->setEditStrategy(QSqlTableModel::OnFieldChange);
     model->select(); //选取整个表的所有行
-    //不显示name属性列,如果这时添加记录，则该属性的值添加不上
-    // model->removeColumn(1);
+    //不显示部分属性列,如果这时添加记录，则该属性的值添加不上
+    model->removeColumns(4,3);
+//    model->removeColumn(4);
+//    model->removeColumn(5);
+//    model->removeColumn(6);
+    if(isAdmin==false) model->removeColumn(2);
+    //
     ui->tableView->setModel(model);
     //使其不可编辑
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -116,8 +121,6 @@ void MainWindow::deleteItem()
 {
     //获取选中的行
     int curRow = ui->tableView->currentIndex().row();
-
-
     int ok = QMessageBox::warning(this,tr("删除当前行!"),
                                   tr("你确定删除当前行吗？"),
                                   QMessageBox::Yes,QMessageBox::No);
@@ -132,7 +135,10 @@ void MainWindow::deleteItem()
 void MainWindow::showAll()
 {
     model->setTable("media");   //重新关联表
+
     model->select();   //这样才能再次显示整个表的内容
+    model->removeColumns(4,3);
+    if(isAdmin==false) model->removeColumn(2);
     //ui->tableView->resizeColumnsToContents();//由内容调整列
 }
 void MainWindow::search()
@@ -141,24 +147,7 @@ void MainWindow::search()
     int filetype = ui->comboBox_fileType->currentIndex();
     int info = ui->comboBox_info->currentIndex();
     QString filter="";
-    /*
-    switch (filetype)
-    {
-    case 0:QMessageBox::about(this,"1","all");filter = QString("name like '%%1%'").arg(fileName);break;
-    case 1:QMessageBox::about(this,"1","document");filter = QString("name like '%%1%.txt'").arg(fileName);break;
-    case 2:QMessageBox::about(this,"1","picture");filter = QString("name like '%%1%.png' or name like '%%1%.jpg'").arg(fileName);QMessageBox::about(this,"1",filter);break;
-    case 3:QMessageBox::about(this,"1","adio");filter = QString("name like '%%1%.mp3'").arg(fileName);break;
-    case 4:QMessageBox::about(this,"4","video");filter = QString("name like '%%1%.mp4'").arg(fileName);break;
-    }
-    */
-//    switch (filetype)
-//    {
-//    case 0:filter = QString("name like '%%1%'").arg(fileName);break;
-//    case 1:filter = QString("name like '%%1%.txt'").arg(fileName);break;
-//    case 2:filter = QString("name like '%%1%.png' or name like '%%1%.jpg'").arg(fileName);break;
-//    case 3:filter = QString("name like '%%1%.mp3'").arg(fileName);break;
-//    case 4:filter = QString("name like '%%1%.mp4'").arg(fileName);break;
-//    }
+
     switch (filetype)
     {
     case 0:break;

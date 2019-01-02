@@ -8,26 +8,35 @@
 #include <Windows.h>
 #include "libzplay.h"
 using namespace libZPlay;
-
-
+extern QString userName;
+extern QString password;
+extern bool isAdmin;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    //若是游客，则设置部分功能不可用
+    if (isAdmin==false)
+    {
+        ui->action_add->setDisabled(true);
+        ui->action_delete->setDisabled(true);
+        ui->pushButton_add->setDisabled(true);
+        ui->pushButton_delete->setDisabled(true);
+    }
     // 设置样式
     QFont font;
     font.setFamily("Microsoft YaHei"); //
     qApp->setFont(font);
 
     //应用样式 apply the qss style
-    QFile file(":/test.qss");
-    if(!file.open(QFile::ReadOnly)) QMessageBox::about(this,"Error","读取样式失败！");
-    QTextStream filetext(&file);
-    QString stylesheet = filetext.readAll();
-    this->setStyleSheet(stylesheet);
-    file.close();
+    ////QFile file(":/white.qss");
+    //QFile file(":/test.qss");
+    //if(!file.open(QFile::ReadOnly)) QMessageBox::about(this,"Error","读取样式失败！");
+    //QTextStream filetext(&file);
+    //QString stylesheet = filetext.readAll();
+    //this->setStyleSheet(stylesheet);
+    //file.close();
 
     //显示数据表
     model = new QSqlTableModel(this);
@@ -107,23 +116,24 @@ void MainWindow::deleteItem()
 {
     //获取选中的行
     int curRow = ui->tableView->currentIndex().row();
-    //删除该行
-    model->removeRow(curRow);
+
 
     int ok = QMessageBox::warning(this,tr("删除当前行!"),
                                   tr("你确定删除当前行吗？"),
                                   QMessageBox::Yes,QMessageBox::No);
-    if(ok == QMessageBox::No)
+    if(ok == QMessageBox::Yes)
     {
-        model->revertAll(); //如果不删除，则撤销
+        //删除该行
+        model->removeRow(curRow);
+        model->submitAll(); //否则提交，在数据库中删除该行
+        model->select();
     }
-    else model->submitAll(); //否则提交，在数据库中删除该行
 }
 void MainWindow::showAll()
 {
     model->setTable("media");   //重新关联表
     model->select();   //这样才能再次显示整个表的内容
-    ui->tableView->resizeColumnsToContents();//由内容调整列
+    //ui->tableView->resizeColumnsToContents();//由内容调整列
 }
 void MainWindow::search()
 {
@@ -304,9 +314,11 @@ void MainWindow::on_tableView_customContextMenuRequested(const QPoint &pos)  //�
     QMenu *cmenu = new QMenu(ui->tableView);
     QAction *open = cmenu->addAction("打开");
     QAction *wayToOpen = cmenu->addAction("打开方式");
+    QAction *deleteItem =cmenu->addAction("删除");
     QAction *detail = cmenu->addAction("详细信息");
     connect(open, SIGNAL(triggered(bool)), this, SLOT(on_action_open_triggered()));
     connect(wayToOpen, SIGNAL(triggered(bool)), this, SLOT(on_action_way_to_open_triggered()));
+    connect(deleteItem, SIGNAL(triggered(bool)), this, SLOT(on_action_delete_triggered()));
     connect(detail, SIGNAL(triggered(bool)), this, SLOT(on_action_detail_triggered()));
     cmenu->exec(QCursor::pos());
 }

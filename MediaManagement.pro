@@ -3,6 +3,11 @@
 # Project created by QtCreator 2018-09-26T20:00:50
 #
 #-------------------------------------------------
+#to make it faster
+PRECOMPILED_HEADER = stable.h
+#QMAKE_CXXFLAGS += /MP
+
+
 QT       += core gui sql
 QT       += core gui widgets
 
@@ -25,15 +30,19 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    logindialog.cpp
 
 
 HEADERS += \
         mainwindow.h \
-    connection.h
+    connection.h \
+    stable.h \
+    logindialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    logindialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

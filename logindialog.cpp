@@ -8,6 +8,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
+    ui->password->setEchoMode(QLineEdit::Password);//输入时显示数字，失去焦点时显示圆点
 }
 
 LoginDialog::~LoginDialog()

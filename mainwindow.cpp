@@ -44,17 +44,13 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setEditStrategy(QSqlTableModel::OnFieldChange);
     model->select(); //选取整个表的所有行
     //不显示部分属性列,如果这时添加记录，则该属性的值添加不上
-    model->removeColumns(4,3);
-//    model->removeColumn(4);
-//    model->removeColumn(5);
-//    model->removeColumn(6);
+    model->removeColumns(3,4);
     if(isAdmin==false) model->removeColumn(2);
-    //
     ui->tableView->setModel(model);
     //使其不可编辑
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //由内容调整列
-    //ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeColumnsToContents();
     //ui->tableView->setColumnWidth(0,30);
     //ui->tableView->setColumnWidth(1,300);
     //ui->tableView->setColumnWidth(2,400);
@@ -130,6 +126,7 @@ void MainWindow::deleteItem()
         model->removeRow(curRow);
         model->submitAll(); //否则提交，在数据库中删除该行
         model->select();
+        ui->tableView->resizeColumnsToContents();
     }
 }
 void MainWindow::showAll()
@@ -137,9 +134,9 @@ void MainWindow::showAll()
     model->setTable("media");   //重新关联表
 
     model->select();   //这样才能再次显示整个表的内容
-    model->removeColumns(4,3);
+    model->removeColumns(3,4);
     if(isAdmin==false) model->removeColumn(2);
-    //ui->tableView->resizeColumnsToContents();//由内容调整列
+    ui->tableView->resizeColumnsToContents();//由内容调整列
 }
 void MainWindow::search()
 {
@@ -153,8 +150,8 @@ void MainWindow::search()
     case 0:break;
     case 1:filter = QString("(name like '%.txt')");break;
     case 2:filter = QString("(name like '%.png' or name like '%.jpg')");break;
-    case 3:filter = QString("(name like '%.mp3')");break;
-    case 4:filter = QString("(name like '%.mp4')");break;
+    case 3:filter = QString("(name like '%.mp3' or name like '%.wav')");break;
+    case 4:filter = QString("(name like '%.mp4' or name like '%.avi')");break;
     }
     if(filetype!=0)
     {
@@ -169,6 +166,7 @@ void MainWindow::search()
     }
     model->setFilter(filter);
     model->select();
+    ui->tableView->resizeColumnsToContents();
 }
 void MainWindow::add()
 {
@@ -207,15 +205,24 @@ void MainWindow::add()
         query.exec(QString("insert into media values(%1,'%2','%3','%4','%5','%6','%7')").arg(id).arg(fileName).arg(path).arg(title).arg(artist).arg(album).arg(year));
         //query.exec(QString("insert into media values(%1,'%2','%3')").arg(id).arg(fileName).arg(path));
         model->select();
+        ui->tableView->resizeColumnsToContents();
     }
 }
 void MainWindow::open()
 {
     //获取选中的行
     int curRow = ui->tableView->currentIndex().row();
-    //获取该行第二列信息，即path
-    QModelIndex index=model->index(curRow,2,QModelIndex());//rowNum,columnNum为行列号
-    QString path= index.data().toString();
+    //获取该行第0列信息，即id
+    QModelIndex index=model->index(curRow,0,QModelIndex());//rowNum,columnNum为行列号
+    QString id= index.data().toString();
+    //查找media表,由id得到path
+    QSqlQuery query;
+    //QString sql="select path from media where id = "+id + ";";
+    if(!query.exec("select path from media where id = "+id + ";"))
+        qDebug() <<"error while selecting path";
+    query.next();
+    QString path = query.value(0).toString();
+
     //打开该文件
     QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(path).absoluteFilePath()));
 }
@@ -225,8 +232,16 @@ void MainWindow::wayToOpen()
     QString pathBack,exeBack;
     //获取要打开的文件路径path
     int curRow = ui->tableView->currentIndex().row();
-    QModelIndex index=model->index(curRow,2,QModelIndex());//rowNum,columnNum为行列号
-    QString path= index.data().toString();
+    //获取该行第0列信息，即id
+    QModelIndex index=model->index(curRow,0,QModelIndex());//rowNum,columnNum为行列号
+    QString id= index.data().toString();
+    //查找media表,由id得到path
+    QSqlQuery query;
+    //QString sql="select path from media where id = "+id + ";";
+    if(!query.exec("select path from media where id = "+id + ";"))
+        qDebug() <<"error while selecting path";
+    query.next();
+    QString path = query.value(0).toString();
 
     //处理path的类型
     path = path.replace(QRegExp("\\/"),"\\\\");//左右斜杠转换
